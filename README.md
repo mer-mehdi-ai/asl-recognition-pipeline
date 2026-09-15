@@ -1,4 +1,4 @@
-# ASL Recognition Pipeline
+#  ASL Recognition Pipeline
 
 [![CI](https://github.com/mer-mehdi-ai/asl-recognition-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/mer-mehdi-ai/asl-recognition-pipeline/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
