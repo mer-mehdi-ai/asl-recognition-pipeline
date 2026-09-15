@@ -1,0 +1,26 @@
+# End-to-end convolutional classifier (PyTorch).
+# Needs a GPU to be comfortable: ~10 min/epoch on CPU, ~1 min/epoch on a T4.
+name: cnn-blocked
+model: cnn
+runs_dir: runs
+
+data:
+  root: data/raw/asl_alphabet_train/asl_alphabet_train
+  extensions: [".jpg", ".png"]
+  max_per_class: null
+
+split:
+  strategy: blocked
+  test_size: 0.2
+  seed: 42
+
+cnn:
+  image_size: 100
+  batch_size: 64
+  epochs: 4
+  learning_rate: 0.001
+  num_workers: 2
+  device: auto
+  augment: true
+  seed: 42
+  log_every: 30

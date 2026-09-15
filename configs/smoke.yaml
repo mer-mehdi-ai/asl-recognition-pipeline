@@ -1,0 +1,22 @@
+# Tiny end-to-end run on the committed sample: used by `make smoke` and in CI.
+name: smoke-landmark
+model: landmark_rf
+runs_dir: runs
+
+data:
+  root: data/sample
+  extensions: [".jpg", ".png"]
+  max_per_class: 3
+
+split:
+  strategy: blocked
+  test_size: 0.34
+  seed: 0
+
+landmarks:
+  features_path: data/interim/landmarks_sample.parquet
+  normalization: bbox
+
+random_forest:
+  n_estimators: 50
+  seed: 0

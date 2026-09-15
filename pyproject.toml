@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asl-recognition-pipeline"
+version = "0.1.0"
+description = "Reproducible pipeline for American Sign Language fingerspelling recognition: two interchangeable backends (hand-landmark + Random Forest, end-to-end CNN) behind one CLI, one evaluation protocol and one inference API."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Mehdi Merizak" }]
+keywords = ["computer-vision", "mediapipe", "pytorch", "mlops", "data-engineering", "sign-language"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "numpy>=1.23,<2",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+    "scikit-learn>=1.2",
+    "pydantic>=2.5",
+    "pyyaml>=6.0",
+    "typer>=0.12",
+    "rich>=13.0",
+    "joblib>=1.3",
+    "pillow>=10.0",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+# MediaPipe dropped the Solutions API (mp.solutions.hands) after 0.10.14; the
+# Tasks API that replaced it needs a separately downloaded .task bundle, so the
+# extra stays on the last self-contained release line.
+vision = ["opencv-python-headless>=4.8", "mediapipe>=0.10.9,<0.10.15"]
+cnn = ["torch>=2.1", "torchvision>=0.16", "matplotlib>=3.7"]
+api = ["fastapi>=0.110", "uvicorn[standard]>=0.29", "python-multipart>=0.0.9"]
+data = ["kagglehub>=0.3"]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "httpx>=0.27",
+]
+all = [
+    "asl-recognition-pipeline[vision,cnn,api,data,dev]",
+]
+
+[project.scripts]
+asl = "asl.cli:app"
+
+[project.urls]
+Repository = "https://github.com/mer-mehdi-ai/asl-recognition-pipeline"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+asl = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "C4", "ARG", "PTH", "RET"]
+ignore = ["B008"]  # typer uses function calls in argument defaults
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["ARG001", "ARG002", "ARG005"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: marks tests that need the full dataset or a GPU",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

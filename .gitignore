@@ -1,0 +1,32 @@
+# data & artifacts (never committed - see docs/dataset.md)
+data/raw/
+data/interim/
+data/processed/
+runs/
+*.pth
+*.pt
+*.pickle
+*.joblib
+!data/sample/**
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# tooling
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.ipynb_checkpoints/
+.DS_Store
+.idea/
+.vscode/

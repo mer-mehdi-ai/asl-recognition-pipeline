@@ -1,0 +1,30 @@
+# MediaPipe hand landmarks -> Random Forest.
+# Trains on CPU in seconds once the landmark table is cached; runs at webcam speed.
+name: landmark-rf-blocked
+model: landmark_rf
+runs_dir: runs
+
+data:
+  root: data/raw/asl_alphabet_train/asl_alphabet_train
+  extensions: [".jpg", ".png"]
+  max_per_class: null        # cap images per class for a quick run
+
+split:
+  strategy: blocked          # see docs/evaluation.md - `random` inflates the score
+  test_size: 0.2
+  seed: 42
+
+landmarks:
+  static_image_mode: true
+  max_num_hands: 1
+  min_detection_confidence: 0.3
+  min_tracking_confidence: 0.5
+  normalization: bbox        # position + scale invariant
+  features_path: data/interim/landmarks.parquet
+
+random_forest:
+  n_estimators: 300
+  max_depth: null
+  min_samples_leaf: 1
+  n_jobs: -1
+  seed: 42
